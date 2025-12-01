@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { WalletProviders } from "./WalletProviders";
+import ClientLayout from "./ClientLayout";
 
 export const metadata: Metadata = {
   title: "Grow A Tree For Christmas",
@@ -16,15 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* ←←← ALL YOUR ORIGINAL CSS GOES HERE ←←← */}
-        <link rel="stylesheet" href="/css/style.css" />
-        <link rel="stylesheet" href="/css/responsive.css" />
-        {/* Add any other CSS files you had here */}
+        <link rel="stylesheet" href="/assets/css/styles.css" />
+        <link rel="stylesheet" href="/assets/css/responsive.css" />
       </head>
       <body className="min-h-screen bg-black text-white antialiased">
-        <WalletProviders>
-          {children}
-        </WalletProviders>
+        <ClientLayout>
+          <WalletProviders>{children}</WalletProviders>
+        </ClientLayout>
       </body>
     </html>
   );

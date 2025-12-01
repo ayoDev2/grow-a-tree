@@ -31,11 +31,26 @@ export default function Home() {
     });
     setSoundOn(true);
 
+     // Auto-play after first user interaction (works on mobile + Chrome)
+  const unlockAudio = () => {
+    soundRef.current?.play();
+    setSoundOn(true);
+    document.removeEventListener('click', unlockAudio);
+    document.removeEventListener('touchstart', unlockAudio);
+  };
+
+  document.addEventListener('click', unlockAudio);
+  document.addEventListener('touchstart', unlockAudio);
+
     return () => soundRef.current?.unload();
   }, []);
 
   const toggleSound = () => {
-    soundOn ? soundRef.current?.pause() : soundRef.current?.play();
+    if (soundOn) {
+      soundRef.current?.pause();
+    } else {
+      soundRef.current?.play();
+    }
     setSoundOn(!soundOn);
   };
 
@@ -130,7 +145,7 @@ export default function Home() {
               <h1 className="home__title">Grow A Tree For Christmas</h1>
               <p className="home__description">
                 Before the holidays, we buy and decorate trees for christmas.<br />
-                <p>Join others, Grow your TREES ON-chain, Grab a Tree and start growing.</p>
+                Join others, Grow your TREES ON-chain, Grab a Tree and start growing.
               </p>
               <a href="#" className="button">Grab A TREE</a>
             </div>
@@ -234,7 +249,7 @@ export default function Home() {
               <p className="text-4xl mb-10 text-green-300 font-bold">Contract Address</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8 bg-black/70 backdrop-blur-xl border-4 border-yellow-600/50 rounded-3xl p-10 shadow-2xl">
                 <code className="text-2xl font-mono text-yellow-300 break-all text-center sm:text-left">
-                  {TOKEN_MINT}
+                  {TOKEN_MINT.toBase58()}
                 </code>
                 <button
                   onClick={() => {
