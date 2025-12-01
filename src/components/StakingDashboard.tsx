@@ -15,7 +15,8 @@ import { TOKEN_MINT } from '@/config/token';
 const STAKING_VAULT = new PublicKey("FANKgbQxB2ajfaXUB5YMAW6TELQnmnZp3tXeXDLajovg"); // ← change this
 
 export default function StakingDashboard() {
-  const { connection, publicKey, sendTransaction } = useWallet();
+  const { publicKey, sendTransaction } = useWallet();
+  const { connection } = useConnection(); // ← ADDED THIS LINE
   const [amount, setAmount] = useState('');
 
   const stake = async () => {
