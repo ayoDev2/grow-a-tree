@@ -260,7 +260,7 @@ export default function Home() {
                 </code>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(TOKEN_MINT);
+                    navigator.clipboard.writeText(TOKEN_MINT.toBase58());
                     toast.success("CA Copied — Let's Moon!");
                   }}
                   className="p-6 bg-gradient-to-r from-yellow-500 to-green-500 rounded-2xl hover:scale-110 transition-all shadow-2xl"
