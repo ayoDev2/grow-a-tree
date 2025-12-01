@@ -32,17 +32,24 @@ export default function Home() {
     setSoundOn(true);
 
      // Auto-play after first user interaction (works on mobile + Chrome)
-  const unlockAudio = () => {
-    soundRef.current?.play();
-    setSoundOn(true);
-    document.removeEventListener('click', unlockAudio);
-    document.removeEventListener('touchstart', unlockAudio);
-  };
-
-  document.addEventListener('click', unlockAudio);
-  document.addEventListener('touchstart', unlockAudio);
-
-    return () => soundRef.current?.unload();
+     const unlockAudio = () => {
+      if (soundRef.current && !soundOn) {
+        soundRef.current.play();
+        setSoundOn(true);
+      }
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+    };
+  
+    document.addEventListener('click', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+  
+    // Proper cleanup
+    return () => {
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+      soundRef.current?.unload();
+    };
   }, []);
 
   const toggleSound = () => {

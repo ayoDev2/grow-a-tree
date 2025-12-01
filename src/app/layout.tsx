@@ -19,6 +19,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="/assets/css/styles.css" />
         <link rel="stylesheet" href="/assets/css/responsive.css" />
+        <link rel="icon" href="/favicon.png" sizes="any" />
       </head>
       <body className="min-h-screen bg-black text-white antialiased">
         <ClientLayout>
