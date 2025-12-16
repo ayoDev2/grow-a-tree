@@ -127,7 +127,10 @@ export default function Home() {
               <li className="nav__item"><a href="#home" className="nav__link active-link">Home</a></li>
               <li className="nav__item"><a href="#share" className="nav__link">Share</a></li>
               <li className="nav__item"><a href="#decoration" className="nav__link">How it works</a></li>
-              <li className="nav__item"><a href="#accessory" className="nav__link">Accessory</a></li>
+
+              
+               
+
               <li className="nav__item"><a href="/leaderboard" className="nav__link">Leaderboard</a></li>
               <li><i className="bx bx-toggle-left change-theme" id="theme-button"></i></li>
             </ul>
@@ -151,10 +154,10 @@ export default function Home() {
             <div className="home__data">
               <h1 className="home__title">Grow A Tree For Christmas</h1>
               <p className="home__description">
-                Before the holidays, we buy and decorate trees for christmas.<br />
+                 Trees are the Holy grail.<br />
                 Join others, Grow your TREES ON-chain, Grab a Tree and start growing.
               </p>
-              <a href="#" className="button">Grab A TREE</a>
+              <a href="https://pump.fun/" className="button">Grab A TREE</a>
             </div>
           </div>
         </section>
@@ -199,8 +202,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ACCESSORIES */}
-        <section className="accessory section bd-container" id="accessory">
+        {/* ACCESSORIES  <li className="nav__item"><a href="#accessory" className="nav__link">Accessory</a></li> 
+         <section className="accessory section bd-container" id="accessory">
           <h2 className="section-title">New Christmas <br /> Accessories</h2>
           <div className="accessory__container bd-grid">
             {[
@@ -220,6 +223,8 @@ export default function Home() {
             ))}
           </div>
         </section>
+        */}
+       
 
         {/* SEND GIFT */}
         <section className="send section">
@@ -232,7 +237,7 @@ export default function Home() {
               <form action="">
                 <div className="send__direction">
                   <input type="text" placeholder="Wallet address" className="send__input" />
-                  <a href="#" className="button">Send</a>
+                  <a href="www.pump.fun" className="button">Send</a>
                 </div>
               </form>
             </div>
