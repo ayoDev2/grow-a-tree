@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { WalletProviders } from "./WalletProviders";
 import ClientLayout from "./ClientLayout";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Grow A Tree For Christmas",
