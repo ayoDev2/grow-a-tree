@@ -4,6 +4,9 @@ import "./globals.css";
 import { WalletProviders } from "./WalletProviders";
 import ClientLayout from "./ClientLayout";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+injectSpeedInsights();
 
 export const metadata: Metadata = {
   title: "Grow A Tree For Christmas",
