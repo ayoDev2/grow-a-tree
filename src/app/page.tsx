@@ -5,9 +5,8 @@ import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 import { Howl } from 'howler';
 import { useEffect, useState, useRef } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Copy } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { Copy } from 'lucide-react';
 import Image from 'next/image';
 import GrowingTree from '@/components/GrowingTree';
 import StakingBox from '@/components/StakingBox';
@@ -15,24 +14,30 @@ import StakingDashboard from '@/components/StakingDashboard';
 import { TOKEN_MINT, PUMPFUN_URL, TWITTER_LINK } from '@/config/token';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import '@solana/wallet-adapter-react-ui/styles.css';
-
+import { useWallet } from '@solana/wallet-adapter-react';
 
 export default function Home() {
   const [soundOn, setSoundOn] = useState(false);
   const soundRef = useRef<Howl | null>(null);
+  
+
+  // Form states — MOVED INSIDE THE COMPONENT
+  const [wallet, setWallet] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     soundRef.current = new Howl({
       src: ['/assets/audio/christmas-song.mp3'],
       loop: true,
       volume: 0.5,
-      autoplay: true,        // ← THIS MAKES IT START IMMEDIATELY
+      autoplay: true,
       preload: true,
     });
     setSoundOn(true);
 
-     // Auto-play after first user interaction (works on mobile + Chrome)
-     const unlockAudio = () => {
+    const unlockAudio = () => {
       if (soundRef.current && !soundOn) {
         soundRef.current.play();
         setSoundOn(true);
@@ -40,11 +45,10 @@ export default function Home() {
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);
     };
-  
+
     document.addEventListener('click', unlockAudio);
     document.addEventListener('touchstart', unlockAudio);
-  
-    // Proper cleanup
+
     return () => {
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);
@@ -61,11 +65,10 @@ export default function Home() {
     setSoundOn(!soundOn);
   };
 
-  const particlesInit = async (engine: any) => {  
+  const particlesInit = async (engine: any) => {
     await loadSlim(engine);
   };
 
-  // Load your original main.js only once
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '/assets/js/main.js';
@@ -73,6 +76,31 @@ export default function Home() {
     document.head.appendChild(script);
     return () => script.remove();
   }, []);
+
+  // Form submit handler — MOVED INSIDE THE COMPONENT
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+    setSuccess(false);
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbw8sb2G3k_yLcNGCW1IlGGrZltSzGcvANG2gAP7QmUWRUbjtZNqOY4s5rLIykhELpKZuQ/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new FormData(e.currentTarget),
+      });
+
+      setMessage('Wallet address submitted successfully! 🎉');
+      setSuccess(true);
+      setWallet('');
+    } catch (error) {
+      setMessage('Submission failed. Please try again.');
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -127,10 +155,6 @@ export default function Home() {
               <li className="nav__item"><a href="#home" className="nav__link active-link">Home</a></li>
               <li className="nav__item"><a href="#share" className="nav__link">Share</a></li>
               <li className="nav__item"><a href="#decoration" className="nav__link">How it works</a></li>
-
-              
-               
-
               <li className="nav__item"><a href="/leaderboard" className="nav__link">Leaderboard</a></li>
               <li><i className="bx bx-toggle-left change-theme" id="theme-button"></i></li>
             </ul>
@@ -154,10 +178,10 @@ export default function Home() {
             <div className="home__data">
               <h1 className="home__title">Grow A Tree For Christmas</h1>
               <p className="home__description">
-                 Trees are the Holy grail.<br />
-                Join others, Grow your TREES ON-chain, Grab a Tree and start growing.
+                Trees are the Holy grail.<br />
+                Join others, Grab a Tree, Connect your wallet, Then watch it grow.
               </p>
-              <a href="https://pump.fun/" className="button">Grab A TREE</a>
+              <a href="https://pump.fun/" className="button">Buy A TREE</a>
             </div>
           </div>
         </section>
@@ -173,7 +197,7 @@ export default function Home() {
                 Sharing these holidays is the best form of love,<br />
                 We will be gifting TREES back to the Community and Holders.
               </p>
-              <a href="#" className="button">Send a Gift</a>
+              <a href="#" className="button">Join the Community</a>
             </div>
             <div className="share__img">
               <Image src="/assets/img/shared.png" alt="" width={500} height={500} />
@@ -193,7 +217,7 @@ export default function Home() {
             </div>
             <div className="decoration__data">
               <Image src="/assets/img/decoration2.png" alt="" width={200} height={200} className="decoration__img" />
-              <h3 className="decoration__title">Join the Community. <br/> Interact with other Growers/Tree holders </h3>
+              <h3 className="decoration__title">Connect your wallet. <br/> Join the Community,  Interact with other Growers/Tree holders </h3>
             </div>
             <div className="decoration__data">
               <Image src="/assets/img/decoration3.png" alt="" width={200} height={200} className="decoration__img" />
@@ -202,43 +226,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ACCESSORIES  <li className="nav__item"><a href="#accessory" className="nav__link">Accessory</a></li> 
-         <section className="accessory section bd-container" id="accessory">
-          <h2 className="section-title">New Christmas <br /> Accessories</h2>
-          <div className="accessory__container bd-grid">
-            {[
-              { name: "Snow Globe", price: "$9.45", img: "accessory1.png" },
-              { name: "Candy", price: "$2.52", img: "accessory2.png" },
-              { name: "Angel", price: "$13.15", img: "accessory3.png" },
-              { name: "Sphere", price: "$4.25", img: "accessory4.png" },
-              { name: "Surprise gift", price: "$7.99", img: "accessory5.png" },
-            ].map((item) => (
-              <div key={item.name} className="accessory__content">
-                <Image src={`/assets/img/${item.img}`} alt="" width={300} height={300} className="accessory__img" />
-                <h3 className="accessory__title">{item.name}</h3>
-                <span className="accessory__category">Accessory</span>
-                <span className="accessory__preci">{item.price}</span>
-                <a href="#" className="button accessory__button"><i className="bx bx-heart"></i></a>
-              </div>
-            ))}
-          </div>
-        </section>
-        */}
-       
-
-        {/* SEND GIFT */}
+        {/* SEND GIFT - NOW WORKING */}
         <section className="send section">
           <div className="send__container bd-container bd-grid">
             <div className="send__content">
-              <h2 className="section-title-center send__title">Send Gift Now</h2>
+              <h2 className="section-title-center send__title">Join the TreeDrop</h2>
               <p className="send__description">
-                Start giving away before the holidays are over.
+                $Tree tokens would be Airdropped into selected wallets. Drop your Wallet Address to stand a chance to WIN!
               </p>
-              <form action="">
+              
+              <form onSubmit={handleSubmit}>
                 <div className="send__direction">
-                  <input type="text" placeholder="Wallet address" className="send__input" />
-                  <a href="www.pump.fun" className="button">Send</a>
+                  <input
+                    type="text"
+                    placeholder="Wallet address"
+                    className="send__input"
+                    name="wallet_address"
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value)}
+                    required
+                  />
+                  <button type="submit" className="button" disabled={loading}>
+                    {loading ? 'Sending...' : 'Send'}
+                  </button>
                 </div>
+                {message && (
+                  <p style={{ color: success ? 'green' : 'red', marginTop: '10px', textAlign: 'center' }}>
+                    {message}
+                  </p>
+                )}
               </form>
             </div>
             <div className="send__img">
@@ -280,7 +296,7 @@ export default function Home() {
 
       <footer className="footer section py-20 bg-black/90 text-center">
         <p className="text-3xl text-yellow-400">© 2025 $TREES — Growing Forever</p>
-        <a href={TWITTER_LINK} target="_blank" className="inline-block mt-4 text-5xl text-white hover:text-yellow-400 transition">
+        <a href={TWITTER_LINK} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-5xl text-white hover:text-yellow-400 transition">
           <i className="bx bxl-twitter"></i>
         </a>
       </footer>

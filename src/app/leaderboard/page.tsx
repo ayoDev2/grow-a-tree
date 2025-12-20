@@ -17,25 +17,41 @@ export default function Leaderboard() {
 
   useEffect(() => {
     const fetchHolders = async () => {
+      setLoading(true);
       try {
         const res = await fetch(
-          `https://public-api.birdeye.so/defi/token_holders/${TOKEN_MINT.toBase58()}?limit=50`
+          `https://public-api.birdeye.so/defi/token_holders/${TOKEN_MINT}?limit=50`
         );
         const data = await res.json();
-        setHolders((data.data?.items || []).map((h: any) => ({
-          address: h.owner,
-          amount: h.amount / 1e9,
-          percentage: h.percentage
-        })));
-      } catch (e) {
-        console.error(e);
+
+        if (data.data?.items && data.data.items.length > 0) {
+          setHolders(data.data.items.map((h: any) => ({
+            address: h.owner,
+            amount: h.amount / 1e9, // assuming 9 decimals
+            percentage: h.percentage || 0,
+          })));
+        } else {
+          // Fallback if no data (e.g. token not launched yet)
+          setHolders([
+            { address: "Coming soon...", amount: 100, percentage: 100 },
+            { address: "Your wallet here", amount: 50, percentage: 50 },
+            { address: "Whales incoming", amount: 30, percentage: 30 },
+          ]);
+        }
+      } catch (err) {
+        console.error("Leaderboard error:", err);
+        // Friendly fallback
+        setHolders([
+          { address: "Loading top holders...", amount: 0, percentage: 0 },
+        ]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchHolders();
-    const interval = setInterval(fetchHolders, 25000);
+    const interval = setInterval(fetchHolders, 30000); // refresh every 30s
+
     return () => clearInterval(interval);
   }, []);
 

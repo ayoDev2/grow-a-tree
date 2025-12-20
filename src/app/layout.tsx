@@ -3,10 +3,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { WalletProviders } from "./WalletProviders";
 import ClientLayout from "./ClientLayout";
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { injectSpeedInsights } from '@vercel/speed-insights';
-
-injectSpeedInsights();
 
 export const metadata: Metadata = {
   title: "Grow A Tree For Christmas",
@@ -26,9 +22,12 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" sizes="any" />
       </head>
       <body className="min-h-screen bg-black text-white antialiased">
-        <ClientLayout>
-          <WalletProviders>{children}</WalletProviders>
-        </ClientLayout>
+        {/* FIXED ORDER: WalletProviders wraps ClientLayout */}
+        <WalletProviders>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </WalletProviders>
       </body>
     </html>
   );
