@@ -267,7 +267,7 @@ export default function Home() {
         <section className="py-32 bg-gradient-to-b from-black via-emerald-950 to-black">
           <div className="bd-container text-center">
             <h2 className="text-6xl font-bold bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent mb-16">
-              Your Tree Is Growing
+              Watch your Tree Grow.
             </h2>
             <GrowingTree />
             <StakingBox />
