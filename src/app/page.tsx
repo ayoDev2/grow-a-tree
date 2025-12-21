@@ -204,7 +204,7 @@ export default function Home() {
                  Sharing is the best form of love these holidays,<br />
                 We will be gifting TREES back to the Community and Holders.
               </p>
-              <a href="#" className="button">Join the Community</a>
+              <a href="https://x.com/i/communities/1992274806809485344" target="_blank" className="button">Join the Community</a>
             </div>
             <div className="share__img">
               <Image src="/assets/img/shared.png" alt="" width={500} height={500} />
@@ -306,7 +306,7 @@ export default function Home() {
 
       <footer className="footer section py-20 bg-black/90 text-center">
         <p className="text-3xl text-yellow-400">© 2025 $TREES — Growing Forever</p>
-        <a href={TWITTER_LINK} target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-5xl text-white hover:text-yellow-400 transition">
+        <a href="https://x.com/i/communities/1992274806809485344" target="_blank" rel="noopener noreferrer" className="inline-block mt-4 text-5xl text-white hover:text-yellow-400 transition">
           <i className="bx bxl-twitter"></i>
         </a>
       </footer>
