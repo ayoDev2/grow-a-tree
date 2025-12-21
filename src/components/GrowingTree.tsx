@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 import { TOKEN_MINT } from '@/config/token';
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
 
 export default function GrowingTree() {
   const { connection } = useConnection();
@@ -73,42 +75,47 @@ export default function GrowingTree() {
   // Current scale
   const currentScale = isTapping ? baseScale * 1.2 : baseScale;
 
-  // Has tokens for glow/snow
+  // Has tokens for effects
   const hasTokens = balance > 0;
+
+  // Snow intensity based on balance
+  const snowParticleCount = hasTokens ? (balance > 20_000_000 ? 150 : 100) : 0;
+
+  const particlesInit = async (engine: any) => {
+    await loadSlim(engine);
+  };
+
+  // Determine current level
+  const currentLevel = balance === 0 ? 0 : balance < 20_000_000 ? 1 : 2;
 
   return (
     <div className="text-center my-20 relative overflow-hidden">
-      {/* FULL BACKGROUND SNOW */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        {[...Array(60)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-white text-2xl opacity-80"
-            initial={{ y: -100 }}
-            animate={{ y: "110vh" }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 10,
-              ease: "linear"
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`
-            }}
-          >
-            ❄️
-          </motion.div>
-        ))}
-      </div>
-
-      {/* SNOW ACCUMULATION AT BOTTOM */}
+      {/* FALLING SNOW STORM — ONLY WHEN BALANCE > 0 */}
       {hasTokens && (
-        <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none">
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white/60 to-transparent blur-xl" />
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-white/40 blur-lg" />
-          <div className="absolute bottom-0 left-0 right-0 h-10 bg-white/30" />
-        </div>
+        <Particles
+          id="tree-snow"
+          init={particlesInit}
+          options={{
+            fullScreen: { enable: false },
+            particles: {
+              number: { value: snowParticleCount },
+              color: { value: "#ffffff" },
+              shape: { type: "circle" },
+              opacity: { value: { min: 0.5, max: 1 } },
+              size: { value: { min: 2, max: 6 } },
+              move: {
+                enable: true,
+                speed: { min: 2, max: 6 },
+                direction: "bottom",
+                random: true,
+                straight: false,
+              },
+              wobble: { enable: true, distance: 10, speed: 20 },
+            },
+            background: { color: "transparent" },
+          }}
+          className="absolute inset-0 -z-10 pointer-events-none"
+        />
       )}
 
       {/* TAPPABLE TREE WITH HEARTBEAT GLOW */}
@@ -121,7 +128,7 @@ export default function GrowingTree() {
         whileTap={{ scale: currentScale * 1.1 }}
         whileHover={{ scale: currentScale * 1.05 }}
       >
-        {/* PULSING HEARTBEAT GLOW WHEN TOKENS DETECTED */}
+        {/* PULSING HEARTBEAT GLOW */}
         {hasTokens && (
           <>
             <motion.div
@@ -139,7 +146,6 @@ export default function GrowingTree() {
               }}
               className="absolute inset-0 rounded-full -z-10"
             />
-            {/* Stronger pulse on hover */}
             <motion.div
               animate={{
                 boxShadow: [
@@ -183,6 +189,45 @@ export default function GrowingTree() {
         </AnimatePresence>
       </motion.div>
 
+      {/* LEVEL INDICATOR */}
+      <div className="mt-10">
+        <AnimatePresence mode="wait">
+          {currentLevel === 0 && (
+            <motion.p
+              key="level0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="text-4xl font-bold text-gray-500"
+            >
+              LEVEL 0 — Starter Tree
+            </motion.p>
+          )}
+          {currentLevel === 1 && (
+            <motion.p
+              key="level1"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1.2 }}
+              exit={{ opacity: 0 }}
+              className="text-5xl font-bold text-green-400 animate-pulse"
+            >
+              LEVEL 1 UNLOCKED 🌱
+            </motion.p>
+          )}
+          {currentLevel === 2 && (
+            <motion.p
+              key="level2"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1.3 }}
+              exit={{ opacity: 0 }}
+              className="text-6xl font-black text-yellow-400 animate-pulse drop-shadow-2xl"
+            >
+              LEVEL 2 ACHIEVED 🎄✨
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+
       {/* Status text */}
       <p className="mt-10 text-4xl font-bold">
         {!connected ? (
@@ -194,7 +239,7 @@ export default function GrowingTree() {
         ) : (
           <span className="text-green-400">
             Growing strong!<br />
-            {balance.toLocaleString(undefined, { maximumFractionDigits: 0 })} $TREES. <br/> Buy more $Trees to climb Leaderboard. 
+            {balance.toLocaleString(undefined, { maximumFractionDigits: 0 })} $TREES. <br/> Buy more $Trees to Unlock new Levels.
           </span>
         )}
       </p>

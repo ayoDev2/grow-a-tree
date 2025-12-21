@@ -178,8 +178,15 @@ export default function Home() {
             <div className="home__data">
               <h1 className="home__title">Grow A Tree For Christmas</h1>
               <p className="home__description">
-                Trees are the Holy grail.<br />
-                Join others, Grab a Tree, Connect your wallet, Then watch it grow.
+              Everyone's growing a tree this Christmas.<br /> Except you!<br />
+              Buy $TREES → connect wallet → watch it come Alive! <br/>
+               It grows with every token you hold.<br/>
+               → Unlock new Tree Levels <br />→  Stake for Rewards<br /> → Climb the Leaderboard.<br/>
+             
+              The bigger your bag, the bigger your tree. <br /> 
+              Top Holders are Crowned. its a race to the TOP!
+               <br />Join the cult <br/>
+               or miss the biggest and most magical Tree on Solana this Christmas.
               </p>
               <a href="https://pump.fun/" className="button">Buy A TREE</a>
             </div>
@@ -191,10 +198,10 @@ export default function Home() {
           <div className="share__container bd-grid">
             <div className="share__data">
               <h2 className="section-title-center">
-                Share Tree Tokens <br /> with your loved Ones
+                We are Sharing Tree Tokens <br /> with our Community
               </h2>
               <p className="share__description">
-                Sharing these holidays is the best form of love,<br />
+                 Sharing is the best form of love these holidays,<br />
                 We will be gifting TREES back to the Community and Holders.
               </p>
               <a href="#" className="button">Join the Community</a>
