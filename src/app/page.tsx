@@ -173,7 +173,7 @@ export default function Home() {
         <section className="home" id="home">
           <div className="home__container bd-container bd-grid">
             <div className="home__img">
-              <Image src="/assets/img/home.png" alt="" width={600} height={600} />
+              <Image src="/assets/img/tree 2.png" alt="" width={600} height={600} />
             </div>
             <div className="home__data">
               <h1 className="home__title">Grow A Tree For Christmas</h1>
@@ -226,6 +226,37 @@ export default function Home() {
           </div>
         </section>
 
+         {/* GROWING TREE + CA BOX */}
+         <section className="py-32 bg-gradient-to-b from-black via-emerald-950 to-black">
+          <div className="bd-container text-center">
+            <h2 className="text-6xl font-bold bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent mb-16">
+              Watch your Tree Grow.
+            </h2>
+            <GrowingTree />
+            <StakingDashboard />
+            <StakingBox />
+            
+
+            <div className="mt-24 max-w-5xl mx-auto">
+              <p className="text-4xl mb-10 text-green-300 font-bold">Contract Address</p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 bg-black/70 backdrop-blur-xl border-4 border-yellow-600/50 rounded-3xl p-10 shadow-2xl">
+                <code className="text-2xl font-mono text-yellow-300 break-all text-center sm:text-left">
+                  {TOKEN_MINT.toBase58()}
+                </code>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(TOKEN_MINT.toBase58());
+                    toast.success("CA Copied — Let's Moon!");
+                  }}
+                  className="p-6 bg-gradient-to-r from-yellow-500 to-green-500 rounded-2xl hover:scale-110 transition-all shadow-2xl"
+                >
+                  <Copy size={48} className="text-black" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* SEND GIFT - NOW WORKING */}
         <section className="send section">
           <div className="send__container bd-container bd-grid">
@@ -263,35 +294,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* GROWING TREE + CA BOX */}
-        <section className="py-32 bg-gradient-to-b from-black via-emerald-950 to-black">
-          <div className="bd-container text-center">
-            <h2 className="text-6xl font-bold bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent mb-16">
-              Watch your Tree Grow.
-            </h2>
-            <GrowingTree />
-            <StakingBox />
-            <StakingDashboard />
-
-            <div className="mt-24 max-w-5xl mx-auto">
-              <p className="text-4xl mb-10 text-green-300 font-bold">Contract Address</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 bg-black/70 backdrop-blur-xl border-4 border-yellow-600/50 rounded-3xl p-10 shadow-2xl">
-                <code className="text-2xl font-mono text-yellow-300 break-all text-center sm:text-left">
-                  {TOKEN_MINT.toBase58()}
-                </code>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(TOKEN_MINT.toBase58());
-                    toast.success("CA Copied — Let's Moon!");
-                  }}
-                  className="p-6 bg-gradient-to-r from-yellow-500 to-green-500 rounded-2xl hover:scale-110 transition-all shadow-2xl"
-                >
-                  <Copy size={48} className="text-black" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+       
       </main>
 
       <footer className="footer section py-20 bg-black/90 text-center">

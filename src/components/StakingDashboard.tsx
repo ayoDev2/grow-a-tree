@@ -80,21 +80,11 @@ export default function StakingDashboard() {
         </div>
       </div>
 
-      <div className="space-y-8">
-        <input
-          type="number"
-          placeholder="Amount in millions (e.g. 10)"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="px-12 py-8 text-4xl bg-white/10 rounded-3xl text-white text-center w-full max-w-md"
-        />
-        <button
-          onClick={stake}
-          className="px-20 py-10 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 rounded-3xl text-4xl font-black hover:scale-110 transition-all shadow-2xl"
-        >
-          STAKE NOW
-        </button>
-      </div>
+
+      
+      
+      
+      
     </div>
   );
 }
