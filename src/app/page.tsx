@@ -188,7 +188,7 @@ export default function Home() {
                <br />Join the cult <br/>
                or miss the biggest and most magical Tree on Solana this Christmas.
               </p>
-              <a href="https://pump.fun/" className="button">Buy A TREE</a>
+              <a href="https://pump.fun/AbSCzanXk7u7eQaEnwVZoLUtpHEj9xmrj8dEcYDZpump" className="button">Buy A TREE</a>
             </div>
           </div>
         </section>
